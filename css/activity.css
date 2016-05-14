@@ -1,0 +1,44 @@
+#main-toolbar #activity-button {
+  background-image: url(../activity/activity-icon.svg);
+}
+
+#main-toolbar #face-button {
+  background-image: url(../icons/face.svg);
+}
+
+#main-toolbar #speech-button {
+  background-image: url(../icons/voice.svg);
+}
+
+#main-toolbar #gamemode1-button {
+  background-image: url(../icons/mode-type.svg);
+}
+
+#main-toolbar #gamemode2-button {
+  background-image: url(../icons/mode-robot.svg);
+}
+
+#main-toolbar #gamemode3-button {
+  background-image: url(../icons/mode-chat.svg);
+}
+
+#speakText {
+	height:45px;
+	width:50px;
+	margin:8px;
+	margin-left:-58px;
+	z-index:1;
+	position:absolute;
+	background-image: url(../icons/go-right.svg);
+	background-size: 55px 50px;
+	background-position: 50% 50%;
+}
+
+#userText {
+	height:40px;
+	margin:5px;
+	margin-left:4vh;
+	width:95vw;
+	z-index:0;
+}
+
