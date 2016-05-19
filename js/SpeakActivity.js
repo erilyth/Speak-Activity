@@ -5,7 +5,7 @@ var SpeakActivity = (function() {
 	var canvas = document.getElementById("canvas");
 	var ctx = canvas.getContext('2d');
 	canvas.width  = window.innerWidth;
-  	canvas.height = window.innerHeight;
+  	canvas.height = window.innerHeight-55;
 	var windowWidth = canvas.getBoundingClientRect().width;
 	var windowHeight = canvas.getBoundingClientRect().height;
 
@@ -18,7 +18,7 @@ var SpeakActivity = (function() {
 
 	$(window).resize(function() {
 		canvas.width  = window.innerWidth;
-  		canvas.height = window.innerHeight;
+  		canvas.height = window.innerHeight-55;
   		windowWidth = canvas.getBoundingClientRect().width;
 		windowHeight = canvas.getBoundingClientRect().height;
   		mouthStart = {x:windowWidth*1.35/4,y:windowHeight*2/3.0};
