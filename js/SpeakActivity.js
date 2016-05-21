@@ -200,7 +200,7 @@ var SpeakActivity = (function() {
 		var chatbox = document.getElementById('chatbox');
 		var li = document.createElement("li");
 		li.style.borderRadius = "10px";
-		li.style.backgroundColor = "yellow";
+		li.style.backgroundColor = "#999999";
 		li.style.listStyleType = "none";
 		li.style.padding = "15px";
 		li.style.margin = "-15px";
@@ -283,7 +283,7 @@ var SpeakActivity = (function() {
 		ctx.clearRect(0, 0, canvas.width, canvas.height);
 		ctx.beginPath();
 		ctx.rect(0, 0, canvas.width, canvas.height);
-		ctx.fillStyle = "yellow";
+		ctx.fillStyle = "#999999";
 		ctx.fill();
 	}
 
