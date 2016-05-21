@@ -172,7 +172,7 @@ var SpeakActivity = (function() {
 		}
 	}
 
-	document.getElementById('userText').onkeypress = function(e){
+	document.getElementById('userText').onkeypress = function(e) {
 		var key = e.keyCode || e.which;
 		if (key == 13) {
 			var language = document.getElementById('speaklang').innerHTML;
@@ -183,7 +183,18 @@ var SpeakActivity = (function() {
 			}
 		}
 	}
-	
+
+	document.getElementById('userText').oninput = function(e) {	
+		var bounding = this.getBoundingClientRect();
+		var position = { clientX: bounding.left + 20*document.getElementById('userText').selectionStart, clientY: bounding.top };
+		setMousePosition(canvas, position);
+		updateCanvas();
+	}
+
+	document.getElementById('userText').addEventListener('mousemove', function(evt) {
+        setMousePosition(canvas, evt);
+		updateCanvas();
+
 	document.getElementById('gamemode1-button').onmouseup = function(e){
 		//The type something to hear it mode
 		document.getElementById('mode').innerHTML = "1";
