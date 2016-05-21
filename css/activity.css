@@ -26,7 +26,8 @@
 	height:45px;
 	width:50px;
 	margin:8px;
-	margin-left:-58px;
+	right:4px;
+	bottom: 15px;
 	z-index:1;
 	position:absolute;
 	background-image: url(../icons/go-right.svg);
