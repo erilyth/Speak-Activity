@@ -75,13 +75,9 @@ var Speech = (function() {
 		meSpeak.speak(text, {speed: speed, pitch: pitch}, soundComplete);
     }
 
-	document.getElementById('speakText').onmousedown = function(e){
-		var language = document.getElementById('speaklang').innerHTML;
-		playVoice(language);
-	}
-
 	return {
-        init: init
+        init: init,
+		playVoice: playVoice
     };
 
 });

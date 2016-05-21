@@ -38,9 +38,10 @@ var SpeakActivity = (function() {
 	var mouthYdiff = 0.0;
 	var mouthDirection = 1;
 	var mouthTimeout;
+	var speech = null;
 
 	function init(){
-		var speech = Speech();
+		speech = Speech();
 		speech.init();
 		// If not IE, setup mouse for capture
 		if (!IE){
@@ -159,6 +160,11 @@ var SpeakActivity = (function() {
 		}
 	}
 
+	document.getElementById('speakText').onmousedown = function(e){
+		var language = document.getElementById('speaklang').innerHTML;
+		speech.playVoice(language);
+	}
+	
 	document.getElementById('speakText').onmouseup = function(e){
 		moveMouth();
 		if(document.getElementById('mode').innerHTML == "3"){
@@ -166,6 +172,18 @@ var SpeakActivity = (function() {
 		}
 	}
 
+	document.getElementById('userText').onkeypress = function(e){
+		var key = e.keyCode || e.which;
+		if (key == 13) {
+			var language = document.getElementById('speaklang').innerHTML;
+			speech.playVoice(language);
+			moveMouth();
+			if(document.getElementById('mode').innerHTML == "3"){
+				addToChat();
+			}
+		}
+	}
+	
 	document.getElementById('gamemode1-button').onmouseup = function(e){
 		//The type something to hear it mode
 		document.getElementById('mode').innerHTML = "1";
