@@ -194,6 +194,7 @@ var SpeakActivity = (function() {
 	document.getElementById('userText').addEventListener('mousemove', function(evt) {
         setMousePosition(canvas, evt);
 		updateCanvas();
+	}, false);
 
 	document.getElementById('gamemode1-button').onmouseup = function(e){
 		//The type something to hear it mode

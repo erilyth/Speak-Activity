@@ -2,6 +2,10 @@
   background-image: url(../activity/activity-icon.svg);
 }
 
+#main-toolbar #language-button {
+  background-image: url(../icons/module-language.svg);
+}
+
 #main-toolbar #face-button {
   background-image: url(../icons/face.svg);
 }
