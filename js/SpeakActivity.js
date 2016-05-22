@@ -1,4 +1,4 @@
-var SpeakActivity = (function() {
+define(function (require) {
 
 	var palette = require("sugar-web/graphics/palette");
 
@@ -317,7 +317,5 @@ var SpeakActivity = (function() {
 		ctx.fill();
 	}
 
-	return {
-        init: init
-    };
+	init();
 });
