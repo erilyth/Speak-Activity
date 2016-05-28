@@ -5,7 +5,7 @@ var Speech = (function() {
 	function init(){
 		//No Initialization as of now.
 		meSpeak.loadConfig("mespeak_config.json");
-   		meSpeak.loadVoice("voices/en/en.json");
+   		meSpeak.loadVoice("voices/en.json");
 	}
 
 	function getBotReply(question){
