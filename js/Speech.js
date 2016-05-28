@@ -1,11 +1,16 @@
 var Speech = (function() {
 
 	var answerFinal = "";
+	
+	var env = require("sugar-web/env");
 
 	function init(){
 		//No Initialization as of now.
-		meSpeak.loadConfig("mespeak_config.json");
-   		meSpeak.loadVoice("voices/en.json");
+		getLanguage(function(language) {
+			document.getElementById('speaklang').innerHTML = language;
+			meSpeak.loadConfig("mespeak_config.json");
+			meSpeak.loadVoice("voices/"+language+".json");
+		});
 	}
 
 	function getBotReply(question){
@@ -74,6 +79,20 @@ var Speech = (function() {
 
 		meSpeak.speak(text, {speed: speed, pitch: pitch}, soundComplete);
     }
+
+	function getLanguage(callback) {
+		if (!env.isSugarizer()) {
+			callback(navigator.language);
+			return;
+		}
+		if (typeof chrome != 'undefined' && chrome.app && chrome.app.runtime) {
+			chrome.storage.local.get('sugar_settings', function(values) {
+				callback(JSON.parse(values.sugar_settings).language);
+			}); 
+		} else {
+			callback(JSON.parse(localStorage.sugar_settings).language);
+		}
+	}
 
 	return {
         init: init,
