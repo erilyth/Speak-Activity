@@ -9,7 +9,12 @@ var Speech = (function() {
 		getLanguage(function(language) {
 			document.getElementById('speaklang').innerHTML = language;
 			meSpeak.loadConfig("mespeak_config.json");
-			meSpeak.loadVoice("voices/"+language+".json");
+			try {
+				meSpeak.loadVoice("voices/"+language+".json");
+			} catch (e) {
+				document.getElementById('speaklang').innerHTML = "en";
+				meSpeak.loadVoice("voices/en.json");
+			}
 		});
 	}
 
