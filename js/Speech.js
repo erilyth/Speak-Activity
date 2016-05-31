@@ -1,17 +1,17 @@
 var Speech = (function() {
 
 	var answerFinal = "";
-	
-	var env = require("sugar-web/env");
+	var playing = "";
 
-	function init(){
+	function init(settings){
 		//No Initialization as of now.
-		getLanguage(function(language) {
-			document.getElementById('speaklang').innerHTML = language;
-			meSpeak.loadConfig("mespeak_config.json");
-			try {
-				meSpeak.loadVoice("voices/"+language+".json");
-			} catch (e) {
+		document.getElementById('speaklang').innerHTML = settings.language;
+		meSpeak.loadConfig("mespeak_config.json");
+		var voice = "voices/"+settings.language+".json";
+		testVoice(voice, function(exist) {
+			if (exist) {
+				meSpeak.loadVoice("voices/"+settings.language+".json");
+			} else {
 				document.getElementById('speaklang').innerHTML = "en";
 				meSpeak.loadVoice("voices/en.json");
 			}
@@ -54,23 +54,50 @@ var Speech = (function() {
 		aimlInterpreter.findAnswerInLoadedAIMLFiles(question, callback);
 	}
 
-	function playVoice(id) {
-      var fname="voices/"+id+".json";
-      var text = document.getElementById('userText').value;
+    function testVoice(voice, callback) {
+    	var req=new XMLHttpRequest();
+		req.url = voice;
+    	try {
+    		req.open('GET', voice);
+    		req.onreadystatechange=function() { 
+				if (req.readyState==4) {
+					callback((req.status==200 || req.status==0) && req.response.length > 0);
+				}
+			};
+    		req.send('');
+    	}
+    	catch(e) {
+    		callback(false);
+    	}
+    }
+	
+	function playVoice(language, text) {
+      playing = text;
+      var fname="voices/"+language+".json";
       if(document.getElementById('mode').innerHTML=="2"){
 	    //After the voice is loaded, playSound callback is called
 	    getBotReply(text);
 	    setTimeout(function(){
-			meSpeak.loadVoice(fname, playSound);
+			testVoice(fname, function (exist) {
+				if (exist)
+					meSpeak.loadVoice(fname, playSound);
+				else
+					meSpeak.loadVoice("voices/en.json", playSound);
+			});		
 		}, 4000);
   	  }
   	  else{
-  	  	meSpeak.loadVoice(fname, playSound);
+		testVoice(fname, function (exist) {
+			if (exist)
+				meSpeak.loadVoice(fname, playSound);
+			else
+				meSpeak.loadVoice("voices/en.json", playSound);
+		});
   	  }
     }
 
     function playSound(){
-		var text = document.getElementById('userText').value;
+		var text = playing;
 		var pitch = document.getElementById('pitch').innerHTML;
 		var speed = document.getElementById('rate').innerHTML;
 		if(document.getElementById('mode').innerHTML=="2"){
@@ -84,20 +111,6 @@ var Speech = (function() {
 
 		meSpeak.speak(text, {speed: speed, pitch: pitch}, soundComplete);
     }
-
-	function getLanguage(callback) {
-		if (!env.isSugarizer()) {
-			callback(navigator.language);
-			return;
-		}
-		if (typeof chrome != 'undefined' && chrome.app && chrome.app.runtime) {
-			chrome.storage.local.get('sugar_settings', function(values) {
-				callback(JSON.parse(values.sugar_settings).language);
-			}); 
-		} else {
-			callback(JSON.parse(localStorage.sugar_settings).language);
-		}
-	}
 
 	return {
         init: init,

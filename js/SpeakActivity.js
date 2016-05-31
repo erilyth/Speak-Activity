@@ -1,6 +1,8 @@
 define(function (require) {
 
 	var palette = require("sugar-web/graphics/palette");
+	var env = require("sugar-web/env");
+	var l10n = require("webL10n");
 
 	var canvas = document.getElementById("canvas");
 	var ctx = canvas.getContext('2d');
@@ -39,18 +41,58 @@ define(function (require) {
 	var mouthDirection = 1;
 	var mouthTimeout;
 	var speech = null;
+	var sugarSettings = {};
+	var first = true;
 
 	function init(){
 		speech = Speech();
-		speech.init();
-		// If not IE, setup mouse for capture
-		if (!IE){
-			document.captureEvents(Event.MOUSEMOVE)
+		getSettings(function(settings) {
+			sugarSettings = settings;
+			speech.init(sugarSettings);
+			// If not IE, setup mouse for capture
+			if (!IE){
+				document.captureEvents(Event.MOUSEMOVE)
+			}
+			var FPS = 30;
+			setInterval(function() {
+			  updateCanvas();
+			}, 1000/FPS);
+			window.addEventListener('localized', function() {
+				if (first) {
+					l10n.language.code = sugarSettings.language;
+					first = false;
+					return;
+				} else {
+					var timer = window.setTimeout(function() {
+					window.clearTimeout(timer);
+						var language = document.getElementById('speaklang').innerHTML;
+						var text = l10n.get("TypeSomething", {name:sugarSettings.name});
+						speech.playVoice(language, text);
+						moveMouth(text);
+					}, 100);
+				}
+			});
+		});
+	}
+
+	function getSettings(callback) {
+		var defaultSettings = {
+			name: "",
+			language: navigator.language
+		};
+		if (!env.isSugarizer()) {
+			callback(defaultSettings);
+			return;
 		}
-		var FPS = 30;
-		setInterval(function() {
-		  updateCanvas();
-		}, 1000/FPS);
+		if (typeof chrome != 'undefined' && chrome.app && chrome.app.runtime) {
+			var loadedSettings = JSON.parse(values.sugar_settings);
+			chrome.storage.local.get('sugar_settings', function(values) {
+				callback(loadedSettings);
+			}); 
+		} else {
+			var loadedSettings = JSON.parse(localStorage.sugar_settings);
+			callback(loadedSettings);
+		}
 	}
 
 	function hidePalettes(){
@@ -162,11 +204,13 @@ define(function (require) {
 
 	document.getElementById('speakText').onmousedown = function(e){
 		var language = document.getElementById('speaklang').innerHTML;
-		speech.playVoice(language);
+		var text = document.getElementById('userText').value;
+		speech.playVoice(language, text);
 	}
 	
 	document.getElementById('speakText').onmouseup = function(e){
-		moveMouth();
+		var text = document.getElementById('userText').value;
+		moveMouth(text);
 		if(document.getElementById('mode').innerHTML == "3"){
 			addToChat();
 		}
@@ -176,8 +220,9 @@ define(function (require) {
 		var key = e.keyCode || e.which;
 		if (key == 13) {
 			var language = document.getElementById('speaklang').innerHTML;
-			speech.playVoice(language);
-			moveMouth();
+			var text = document.getElementById('userText').value;
+			speech.playVoice(language, text);
+			moveMouth(text);
 			if(document.getElementById('mode').innerHTML == "3"){
 				addToChat();
 			}
@@ -262,7 +307,6 @@ define(function (require) {
 	}
 
 	function startMouthAnim(){
-		var text = document.getElementById('userText').value;
 		var speed = document.getElementById('rate').innerHTML;
 		var interval = 0.01;
 		document.getElementById('speaking').innerHTML = 1;
@@ -271,8 +315,7 @@ define(function (require) {
 		},interval*1000);
 	}
 
-	function moveMouth(){
-		var text = document.getElementById('userText').value;
+	function moveMouth(text){
 		if(text != ""){
 			if(document.getElementById('mode').innerHTML=="2"){
 				setTimeout(function(){
