@@ -14,7 +14,6 @@
 <link rel="stylesheet" href="css/inputrange.css">
 <script src="lib/jquery.min.js"></script>
 <script src="js/mespeak.js"></script>
-<link rel="import" id="botdata" href="js/botdata.js">
 </head>
 
 <body>
@@ -22,9 +21,9 @@
   <button class="toolbutton" id="activity-button" title="My Activity"></button>
 
   <!-- Add more buttons here -->
-  <button class="toolbutton" id="gamemode1-button" title="Type something to hear it:"></button>
-  <button class="toolbutton" id="gamemode2-button" title="Ask robot any questions:"></button>
-  <button class="toolbutton" id="gamemode3-button" title="Voice chat:"></button>
+  <button class="toolbutton active" id="gamemode1-button" title="Type something to hear it:"></button>
+  <button class="toolbutton" disabled id="gamemode2-button" title="Ask robot any questions:"></button>
+  <button class="toolbutton" disabled id="gamemode3-button" title="Voice chat:"></button>
 
   <button class="toolbutton" id="language-button" title="Language:"></button>
   <button class="toolbutton" id="speech-button" title="Speech:"></button>
