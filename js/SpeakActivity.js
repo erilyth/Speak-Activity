@@ -148,18 +148,29 @@ define(function (require) {
 
 	function drawEyes(){
 		var i;
+		var eyetype = document.getElementById('eyetype').innerHTML;
 		for(i=1;i<=noOfEyes;i++){
 			ctx.beginPath();
 			ctx.fillStyle="#000000";
-			ctx.arc(eyePos[i].x,eyePos[i].y,radiusEye*1.1,0,2*Math.PI);
-			ctx.fill();
+			if (eyetype == 1) {
+				ctx.arc(eyePos[i].x,eyePos[i].y,radiusEye*1.1,0,2*Math.PI);
+				ctx.fill();
+			} else {
+				var rectsize = radiusEye*1.1;
+				ctx.fillRect(eyePos[i].x-rectsize,eyePos[i].y-rectsize,rectsize*2,rectsize*2);
+			}
 			ctx.closePath();
 		}
 		for(i=1;i<=noOfEyes;i++){
 			ctx.beginPath();
 			ctx.fillStyle="#FFFFFF";
-			ctx.arc(eyePos[i].x,eyePos[i].y,radiusEye,0,2*Math.PI);
-			ctx.fill();
+			if (eyetype == 1) {
+				ctx.arc(eyePos[i].x,eyePos[i].y,radiusEye,0,2*Math.PI);
+				ctx.fill();
+			} else {
+				var rectsize = radiusEye;
+				ctx.fillRect(eyePos[i].x-rectsize,eyePos[i].y-rectsize,rectsize*2,rectsize*2);
+			}
 			ctx.closePath();
 		}
 	}
