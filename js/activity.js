@@ -8,7 +8,6 @@ define(function (require) {
     require("activity/Speech");
 	var facepalette = require("facepalette");
 	var speechpalette = require("speechpalette");
-	var numeyespalette = require("numeyespalette");
 	var languagepalette = require("languagepalette");	
 
     // Manipulate the DOM only when it is ready.
@@ -28,11 +27,6 @@ define(function (require) {
 
         var speechButtonPalette = new speechpalette.ActivityPalette(
             speechButton, datastoreObject);
-
-        var eyeNumberButton = document.getElementById("eyenumber");
-
-        var eyeNumberPalette = new numeyespalette.ActivityPalette(
-            eyeNumberButton, datastoreObject);
 
         var languageButton = document.getElementById("language-button");
 
