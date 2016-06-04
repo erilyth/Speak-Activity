@@ -7,15 +7,7 @@ var Speech = (function() {
 		//No Initialization as of now.
 		document.getElementById('speaklang').innerHTML = settings.language;
 		meSpeak.loadConfig("mespeak_config.json");
-		var voice = "voices/"+settings.language+".json";
-		testVoice(voice, function(exist) {
-			if (exist) {
-				meSpeak.loadVoice("voices/"+settings.language+".json");
-			} else {
-				document.getElementById('speaklang').innerHTML = "en";
-				meSpeak.loadVoice("voices/en.json");
-			}
-		});
+		loadVoice(settings.language);
 	}
 
 	function getBotReply(question){
@@ -70,29 +62,35 @@ var Speech = (function() {
     		callback(false);
     	}
     }
-	
+
+	function loadVoice(name, callback) {
+		var defaultVoice = meSpeak.getDefaultVoice();
+		if (defaultVoice == name || defaultVoice.indexOf(name) == 0) {
+			if (callback) callback();
+			return;
+		}
+		var fname = "voices/"+name+".json";
+		testVoice(fname, function(exist) {
+			if (exist) {
+				meSpeak.loadVoice(fname, callback);
+			} else {
+				document.getElementById('speaklang').innerHTML = "en";
+				meSpeak.loadVoice("voices/en.json", callback);
+			}
+		});
+	}
+
 	function playVoice(language, text) {
       playing = text;
-      var fname="voices/"+language+".json";
       if(document.getElementById('mode').innerHTML=="2"){
 	    //After the voice is loaded, playSound callback is called
 	    getBotReply(text);
 	    setTimeout(function(){
-			testVoice(fname, function (exist) {
-				if (exist)
-					meSpeak.loadVoice(fname, playSound);
-				else
-					meSpeak.loadVoice("voices/en.json", playSound);
-			});		
+			loadVoice(language, playSound);		
 		}, 4000);
   	  }
   	  else{
-		testVoice(fname, function (exist) {
-			if (exist)
-				meSpeak.loadVoice(fname, playSound);
-			else
-				meSpeak.loadVoice("voices/en.json", playSound);
-		});
+		loadVoice(language, playSound);
   	  }
     }
 
