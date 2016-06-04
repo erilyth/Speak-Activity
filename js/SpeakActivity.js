@@ -390,6 +390,7 @@ define(function (require) {
 		document.getElementById('lang-cs').innerHTML = l10n.get('langcs');
 		document.getElementById('lang-de').innerHTML = l10n.get('langde');
 		document.getElementById('lang-el').innerHTML = l10n.get('langel');
+		document.getElementById('lang-eo').innerHTML = l10n.get('langeo');
 		document.getElementById('lang-es').innerHTML = l10n.get('langes');
 		document.getElementById('lang-fi').innerHTML = l10n.get('langfi');
 		document.getElementById('lang-fr').innerHTML = l10n.get('langfr');
